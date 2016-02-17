@@ -1,0 +1,219 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{BD230723-78BC-4F43-9279-E6A236A72A4B}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>WinHttpSDK</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+    <UseOfMfc>false</UseOfMfc>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <LibraryPath>D:\快盘\爱拍\svn\SDK\source\protobuf-2.5.0\vsprojects\Debug;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <LibraryPath>D:\快盘\爱拍\svn\SDK\source\protobuf-2.5.0\vsprojects\Release;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;POCO_SOURCE_EMBEDED;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)\..\Foundation\include;$(ProjectDir)\..\..\protobuf-2.5.0\src</AdditionalIncludeDirectories>
+      <AdditionalUsingDirectories>
+      </AdditionalUsingDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>libprotobuf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\protobuf-2.5.0\vsprojects\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;POCO_SOURCE_EMBEDED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)\..\Foundation\include;$(ProjectDir)\..\..\protobuf-2.5.0\src</AdditionalIncludeDirectories>
+      <PreprocessKeepComments>true</PreprocessKeepComments>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>libprotobuf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\protobuf-2.5.0\vsprojects\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="Project1.vcxproj" />
+    <None Include="Project1.vcxproj.filters" />
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Foundation\include\Poco\SingletonHolder.h" />
+    <ClInclude Include="DefaultSdkCallback.h" />
+    <ClInclude Include="GlobalConfig.h" />
+    <ClInclude Include="HddFetcher.h" />
+    <ClInclude Include="HttpDataNotification.h" />
+    <ClInclude Include="HttpEventArgs.h" />
+    <ClInclude Include="HttpSdkCallbackIntf.h" />
+    <ClInclude Include="HttpSDKIntf.h" />
+    <ClInclude Include="MacFetcher.h" />
+    <ClInclude Include="PBUtil.h2" />
+    <ClInclude Include="Protocols.h" />
+    <ClInclude Include="RptHdrObj.h" />
+    <ClInclude Include="RptStratrgy.h" />
+    <ClInclude Include="RptUtil.h" />
+    <ClInclude Include="SdkHttpRequests.h" />
+    <ClInclude Include="SdkHttpTasks.h" />
+    <ClInclude Include="SeqIDGenerator.h" />
+    <ClInclude Include="SerDerUtil.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="StrategyProtocol.h" />
+    <ClInclude Include="StrategyProtocol_KV.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="WinHttpRequest.h" />
+    <ClInclude Include="WinHttpSDK.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Foundation\src\Ascii.cpp" />
+    <ClCompile Include="..\Foundation\src\ASCIIEncoding.cpp" />
+    <ClCompile Include="..\Foundation\src\AtomicCounter.cpp" />
+    <ClCompile Include="..\Foundation\src\Base64Decoder.cpp" />
+    <ClCompile Include="..\Foundation\src\Base64Encoder.cpp" />
+    <ClCompile Include="..\Foundation\src\Bugcheck.cpp" />
+    <ClCompile Include="..\Foundation\src\DateTime.cpp" />
+    <ClCompile Include="..\Foundation\src\DateTimeFormat.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\DateTimeFormatter.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\DateTimeParser.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\Debugger.cpp" />
+    <ClCompile Include="..\Foundation\src\DigestEngine.cpp" />
+    <ClCompile Include="..\Foundation\src\Environment.cpp" />
+    <ClCompile Include="..\Foundation\src\Error.cpp" />
+    <ClCompile Include="..\Foundation\src\ErrorHandler.cpp" />
+    <ClCompile Include="..\Foundation\src\Event.cpp" />
+    <ClCompile Include="..\Foundation\src\EventArgs.cpp" />
+    <ClCompile Include="..\Foundation\src\Exception.cpp" />
+    <ClCompile Include="..\Foundation\src\File.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\File_WIN32.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\Latin1Encoding.cpp" />
+    <ClCompile Include="..\Foundation\src\Latin2Encoding.cpp" />
+    <ClCompile Include="..\Foundation\src\Latin9Encoding.cpp" />
+    <ClCompile Include="..\Foundation\src\LocalDateTime.cpp" />
+    <ClCompile Include="..\Foundation\src\MD5Engine.cpp" />
+    <ClCompile Include="..\Foundation\src\Mutex.cpp" />
+    <ClCompile Include="..\Foundation\src\Notification.cpp" />
+    <ClCompile Include="..\Foundation\src\NotificationCenter.cpp" />
+    <ClCompile Include="..\Foundation\src\NotificationQueue.cpp" />
+    <ClCompile Include="..\Foundation\src\NumberFormatter.cpp" />
+    <ClCompile Include="..\Foundation\src\NumberParser.cpp" />
+    <ClCompile Include="..\Foundation\src\NumericString.cpp" />
+    <ClCompile Include="..\Foundation\src\Path.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\Path_WIN32.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\PriorityNotificationQueue.cpp" />
+    <ClCompile Include="..\Foundation\src\Random.cpp" />
+    <ClCompile Include="..\Foundation\src\RandomStream.cpp" />
+    <ClCompile Include="..\Foundation\src\RefCountedObject.cpp" />
+    <ClCompile Include="..\Foundation\src\Runnable.cpp" />
+    <ClCompile Include="..\Foundation\src\RWLock.cpp" />
+    <ClCompile Include="..\Foundation\src\StringTokenizer.cpp" />
+    <ClCompile Include="..\Foundation\src\Task.cpp" />
+    <ClCompile Include="..\Foundation\src\TaskManager.cpp" />
+    <ClCompile Include="..\Foundation\src\TaskNotification.cpp" />
+    <ClCompile Include="..\Foundation\src\TextConverter.cpp" />
+    <ClCompile Include="..\Foundation\src\TextEncoding.cpp" />
+    <ClCompile Include="..\Foundation\src\TextIterator.cpp" />
+    <ClCompile Include="..\Foundation\src\Thread.cpp" />
+    <ClCompile Include="..\Foundation\src\ThreadLocal.cpp" />
+    <ClCompile Include="..\Foundation\src\ThreadPool.cpp" />
+    <ClCompile Include="..\Foundation\src\Timespan.cpp" />
+    <ClCompile Include="..\Foundation\src\Timestamp.cpp" />
+    <ClCompile Include="..\Foundation\src\Timezone.cpp" />
+    <ClCompile Include="..\Foundation\src\UnicodeConverter.cpp" />
+    <ClCompile Include="..\Foundation\src\URI.cpp" />
+    <ClCompile Include="..\Foundation\src\UTF16Encoding.cpp" />
+    <ClCompile Include="..\Foundation\src\UTF32Encoding.cpp" />
+    <ClCompile Include="..\Foundation\src\UTF8Encoding.cpp" />
+    <ClCompile Include="..\Foundation\src\UUID.cpp" />
+    <ClCompile Include="..\Foundation\src\UUIDGenerator.cpp" />
+    <ClCompile Include="..\Foundation\src\Windows1250Encoding.cpp" />
+    <ClCompile Include="..\Foundation\src\Windows1251Encoding.cpp" />
+    <ClCompile Include="..\Foundation\src\Windows1252Encoding.cpp" />
+    <ClCompile Include="HddFetcher.cpp" />
+    <ClCompile Include="HttpSDKIntf.cpp" />
+    <ClCompile Include="MacFetcher.cpp" />
+    <ClCompile Include="Protocols.cpp" />
+    <ClCompile Include="RptHdrObj.cpp" />
+    <ClCompile Include="RptStratrgy.cpp" />
+    <ClCompile Include="RptUtil.cpp" />
+    <ClCompile Include="SdkHttpTasks.cpp" />
+    <ClCompile Include="SeqIDGenerator.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="StrategyProtocol_KV.cpp" />
+    <ClCompile Include="TestConcole.cpp" />
+    <ClCompile Include="WinHttpRequest.cpp" />
+    <ClCompile Include="WinHttpSDK.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

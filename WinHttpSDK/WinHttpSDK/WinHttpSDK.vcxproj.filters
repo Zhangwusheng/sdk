@@ -1,0 +1,339 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="源文件\Poco">
+      <UniqueIdentifier>{0f5e147b-1b68-46e5-ad13-2291c6b483fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\SDK">
+      <UniqueIdentifier>{b50653f5-bce3-4b5e-a47c-ddfcb22aff15}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+    <None Include="Project1.vcxproj">
+      <Filter>源文件\SDK</Filter>
+    </None>
+    <None Include="Project1.vcxproj.filters">
+      <Filter>源文件\SDK</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="DefaultSdkCallback.h">
+      <Filter>源文件\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SdkHttpTasks.h">
+      <Filter>源文件\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="HttpDataNotification.h">
+      <Filter>源文件\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="HttpEventArgs.h">
+      <Filter>源文件\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="RptHdrObj.h">
+      <Filter>源文件\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="RptStratrgy.h">
+      <Filter>源文件\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SdkHttpRequests.h">
+      <Filter>源文件\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="WinHttpRequest.h">
+      <Filter>源文件\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="WinHttpSDK.h">
+      <Filter>源文件\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="HttpSDKIntf.h">
+      <Filter>源文件\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Foundation\include\Poco\SingletonHolder.h">
+      <Filter>源文件\Poco</Filter>
+    </ClInclude>
+    <ClInclude Include="HttpSdkCallbackIntf.h">
+      <Filter>源文件\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="Protocols.h">
+      <Filter>源文件\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SerDerUtil.h">
+      <Filter>源文件\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="StrategyProtocol.h">
+      <Filter>源文件\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="StrategyProtocol_KV.h">
+      <Filter>源文件\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="GlobalConfig.h">
+      <Filter>源文件\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="HddFetcher.h">
+      <Filter>源文件\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="MacFetcher.h">
+      <Filter>源文件\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SeqIDGenerator.h">
+      <Filter>源文件\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="RptUtil.h">
+      <Filter>源文件\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="PBUtil.h2">
+      <Filter>源文件\SDK</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\Ascii.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\ASCIIEncoding.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\Base64Encoder.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\AtomicCounter.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\Base64Decoder.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\Bugcheck.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\Debugger.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\DigestEngine.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\Environment.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\Error.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\ErrorHandler.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\Event.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\EventArgs.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\Exception.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\File.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\Latin1Encoding.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\Latin9Encoding.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\Latin2Encoding.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\MD5Engine.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\Mutex.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\Notification.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\NotificationCenter.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\NotificationQueue.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\NumberFormatter.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\NumericString.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\Path.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\PriorityNotificationQueue.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\Random.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\RandomStream.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\RefCountedObject.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\TaskManager.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\TextEncoding.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\TaskNotification.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\TextConverter.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\UnicodeConverter.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\UUIDGenerator.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\UTF16Encoding.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\UTF32Encoding.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\UTF8Encoding.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\UUID.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\Windows1252Encoding.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\Windows1250Encoding.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\Windows1251Encoding.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\Runnable.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\RWLock.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\Task.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\TextIterator.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\Thread.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\ThreadLocal.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\ThreadPool.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\Timestamp.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="RptHdrObj.cpp">
+      <Filter>源文件\SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="RptStratrgy.cpp">
+      <Filter>源文件\SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="SdkHttpTasks.cpp">
+      <Filter>源文件\SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="WinHttpRequest.cpp">
+      <Filter>源文件\SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="WinHttpSDK.cpp">
+      <Filter>源文件\SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\URI.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\NumberParser.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="HttpSDKIntf.cpp">
+      <Filter>源文件\SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\DateTime.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\Timespan.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\LocalDateTime.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\Timezone.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\DateTimeFormat.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\DateTimeFormatter.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\DateTimeParser.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="TestConcole.cpp">
+      <Filter>源文件\SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="Protocols.cpp">
+      <Filter>源文件\SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="StrategyProtocol_KV.cpp">
+      <Filter>源文件\SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\StringTokenizer.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="HddFetcher.cpp">
+      <Filter>源文件\SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="MacFetcher.cpp">
+      <Filter>源文件\SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="SeqIDGenerator.cpp">
+      <Filter>源文件\SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="RptUtil.cpp">
+      <Filter>源文件\SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\File_WIN32.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Foundation\src\Path_WIN32.cpp">
+      <Filter>源文件\Poco</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

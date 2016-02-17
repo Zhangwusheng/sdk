@@ -1,0 +1,91 @@
+#ifndef PBUTIL_H
+#define PBUTIL_H
+
+#include "Poco/URI.h"
+#include <sstream>
+#include "Poco/Base64Encoder.h"
+
+namespace PBUtil {
+    template < class T>
+    std::string serializeProtobufMessage ( const T &msg )
+    {
+        string objBinStr = msg.SerializeAsString();
+        string base64str;
+#if 0
+        DWORD dwSize = 2048;
+        Poco::Buffer<char> buffer ( dwSize );
+        CryptBinaryToString ( ( const  BYTE * ) objBinStr.c_str(), objBinStr.length()
+                              , CRYPT_STRING_BASE64, buffer.begin(), &dwSize );
+        base64str.assign ( buffer.begin(), dwSize );
+
+        string encoded;
+        Poco::URI::encode ( base64str, "", encoded );
+        return encoded;
+#else
+        std::ostringstream str;
+        Base64Encoder encoder ( str );
+        std::istringstream istr ( objBinStr );
+        copy ( std::istreambuf_iterator<char> ( istr ),
+               std::istreambuf_iterator<char>(),
+               std::ostreambuf_iterator<char> ( encoder ) );
+        encoder.close();
+        base64str = str.str() ;
+
+        string encoded;
+        Poco::URI::encode ( base64str, "", encoded );
+        return encoded;
+#endif
+    }
+
+
+    template < class T>
+    bool deserializeProtobufMessage ( const std::string &base64, T &msg )
+    {
+#if 0
+        //第一种方法：使用windows SDK
+        string decodedResponse;
+        Poco::Buffer<BYTE> buffer1 ( httpResponse.length() );
+        DWORD   dw1, dw2, dw3;
+        if ( !CryptStringToBinary ( httpResponse.c_str(), httpResponse.length(), CRYPT_STRING_BASE64
+                                    , buffer1.begin(), &dw1, &dw2, &dw3 ) ) {
+            return false;
+        }
+
+        decodedResponse.assign ( ( char * ) buffer1.begin(), dw1 );
+        return decodedResponse;
+#else
+        //第二种方法，使用POCO
+        std::istringstream istr ( base64 );
+        Base64Decoder decoder ( istr );
+        std::string decodedResponse;
+        Poco::Base64Decoder b64in ( istr );
+        ostringstream ostr;
+        copy ( std::istreambuf_iterator<char> ( b64in ),
+               std::istreambuf_iterator<char>(),
+               std::ostreambuf_iterator<char> ( ostr ) );
+        decodedResponse = ostr.str();
+
+        return msg.ParseFromString ( decodedResponse );
+#endif
+    }
+
+
+    inline std::string toBase64 ( const std::string &instr )
+    {
+        std::string base64str;
+        std::ostringstream str;
+        Poco::Base64Encoder encoder ( str );
+        std::istringstream istr ( instr );
+        std::copy ( std::istreambuf_iterator<char> ( istr ),
+                    std::istreambuf_iterator<char>(),
+                    std::ostreambuf_iterator<char> ( encoder ) );
+        encoder.close();
+        base64str = str.str() ;
+
+        std::string encoded;
+        Poco::URI::encode ( base64str, "", encoded );
+        return encoded;
+    }
+}
+
+#endif

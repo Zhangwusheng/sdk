@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WinHttpSDK", "WinHttpSDK\WinHttpSDK.vcxproj", "{BD230723-78BC-4F43-9279-E6A236A72A4B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3E283F37-A4ED-41B7-A3E6-A2D89D131A30} = {3E283F37-A4ED-41B7-A3E6-A2D89D131A30}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MfcTest", "MfcTest\MfcTest.vcxproj", "{93D95466-9993-4250-BCC2-0A53E3A1BE8F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BD230723-78BC-4F43-9279-E6A236A72A4B} = {BD230723-78BC-4F43-9279-E6A236A72A4B}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libprotobuf", "..\protobuf-2.5.0\vsprojects\libprotobuf.vcxproj", "{3E283F37-A4ED-41B7-A3E6-A2D89D131A30}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "protoc", "..\protobuf-2.5.0\vsprojects\protoc.vcxproj", "{1738D5F6-ED1E-47E0-B2F0-456864B93C1E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BD230723-78BC-4F43-9279-E6A236A72A4B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{BD230723-78BC-4F43-9279-E6A236A72A4B}.Debug|Win32.Build.0 = Debug|Win32
+		{BD230723-78BC-4F43-9279-E6A236A72A4B}.Release|Win32.ActiveCfg = Debug|Win32
+		{BD230723-78BC-4F43-9279-E6A236A72A4B}.Release|Win32.Build.0 = Debug|Win32
+		{93D95466-9993-4250-BCC2-0A53E3A1BE8F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{93D95466-9993-4250-BCC2-0A53E3A1BE8F}.Debug|Win32.Build.0 = Debug|Win32
+		{93D95466-9993-4250-BCC2-0A53E3A1BE8F}.Release|Win32.ActiveCfg = Release|Win32
+		{93D95466-9993-4250-BCC2-0A53E3A1BE8F}.Release|Win32.Build.0 = Release|Win32
+		{3E283F37-A4ED-41B7-A3E6-A2D89D131A30}.Debug|Win32.ActiveCfg = Debug|Win32
+		{3E283F37-A4ED-41B7-A3E6-A2D89D131A30}.Debug|Win32.Build.0 = Debug|Win32
+		{3E283F37-A4ED-41B7-A3E6-A2D89D131A30}.Release|Win32.ActiveCfg = Debug|Win32
+		{3E283F37-A4ED-41B7-A3E6-A2D89D131A30}.Release|Win32.Build.0 = Debug|Win32
+		{1738D5F6-ED1E-47E0-B2F0-456864B93C1E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{1738D5F6-ED1E-47E0-B2F0-456864B93C1E}.Debug|Win32.Build.0 = Debug|Win32
+		{1738D5F6-ED1E-47E0-B2F0-456864B93C1E}.Release|Win32.ActiveCfg = Release|Win32
+		{1738D5F6-ED1E-47E0-B2F0-456864B93C1E}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

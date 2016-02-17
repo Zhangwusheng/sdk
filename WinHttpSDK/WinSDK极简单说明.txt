@@ -1,0 +1,41 @@
+1.编写一个子类，从DefaultSdkCallback继承，改写函数getAppVer
+
+//~~~~~~~~~~~~~~~~~~~~~~
+class McboxSdkCallback:public DefaultSdkCallback
+{
+	std::string getAppVer(){
+		return "1.2.3";
+};
+//~~~~~~~~~~~~~~~~~~~~~~
+2.在程序启动时调用
+
+#include "HttpSDKIntf.h"
+//~~~~~~~~~~~~~~~~~~~~~~
+class Applicaltion{
+
+....
+	McboxSdkCallback m_sdkCallback;
+	//~~~~~~~~~~~~~~~~~~~~~~
+}
+
+Application::InitInstance()
+{
+	......
+	
+	
+	//~~~~~~~~~~~~~~~~~~~~~~
+	HttpSDKIntf::getInstance().appStartLaunchWithAppKey(
+	appkey,channel,&m_sdkCallback);
+	HttpSDKIntf::getInstance().startupEvent();
+	//~~~~~~~~~~~~~~~~~~~~~~
+}
+
+3.调用业务接口
+HttpSDKIntf::getInstance().mcboxLogin(...);
+HttpSDKIntf::getInstance().mcboxPeak(...);
+
+4.在程序退出时调用
+HttpSDKIntf::getInstance().quit();
+
+
+	
