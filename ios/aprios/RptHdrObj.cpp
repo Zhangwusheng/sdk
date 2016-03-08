@@ -17,12 +17,33 @@
 #include <iostream>
 using namespace std;
 
-std::string RptHdrObj::toString()
+std::string RptHdrObj::getAppKey(int index)
+{
+    if( index == 1 )
+        return m_appkey;
+    else
+        return m_secondAppKey;
+}
+
+bool RptHdrObj::hasNextKey(){
+    if (m_secondAppKey.length()>0) {
+        if (m_secondAppKey != m_appkey) {
+            return true;
+        }
+        else
+            return false;
+    }
+    else
+        return false;
+}
+
+std::string RptHdrObj::toString(int keyIndex)
 {
 #if DATA_SERDER_CUR == DATA_SERDER_KV
     
     ostringstream ostm;
-    ostm<<"appkey="<<m_appkey
+    
+    ostm<<"appkey="<<getAppKey(keyIndex)
         <<"&channel="<<SerDerUtil::toBase64( m_channel)
         <<"&machineid="<<SerDerUtil::toBase64(m_machindId)
         <<"&loaderver="<<SerDerUtil::toBase64(m_SdkCallback->getLoaderVer())

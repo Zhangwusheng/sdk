@@ -15,7 +15,8 @@
 
 class RptHdrObj {
 public:
-    std::string toString();
+    std::string toString(int keyIndex = 1);
+    bool hasNextKey();
     
     std::string m_appkey;
     std::string m_channel;
@@ -26,7 +27,11 @@ public:
     std::string m_osVendor;
     
     std::string m_statGuid;
+    std::string m_secondAppKey;
+    
     HttpSdkCallbackIntf* m_SdkCallback;
+private:
+    std::string getAppKey(int index);
 };
 
 #endif /* defined(__aprios__RptHdrObj__) */

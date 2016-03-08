@@ -57,5 +57,7 @@
 #pragma mark - 策略加载(SDK内部使用) -
 -(void) onHttpStrategyLoaded:(NSString*)repsonse withSuccessFlag:(BOOL)successLoaded;
 
+-(void) switchAppKey:(NSString*)appkey;
+
 
 @end

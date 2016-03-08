@@ -41,11 +41,12 @@ Poco::NotificationQueue m_cacheQueue;
 RptStrategy m_rptStrategy;
 Poco::SharedPtr<Poco::TaskManager> m_taskManager;
 Poco::AtomicCounter m_strategyLoaded;
-std::string m_hdrString;
+//std::string m_hdrString;
 map<string,mbpageview> m_pageview;
 Poco::SharedPtr<HttpStrategyTask> m_StrategyHttpResuest;
 //Poco::AtomicCounter m_isRunning;
 Poco::FastMutex m_mutex;
+RptHdrObj m_hdr ;
 
 #pragma mark - 单例对象 -
 + (instancetype)shareStatSDK{
@@ -100,25 +101,41 @@ Poco::FastMutex m_mutex;
 }
 
 -(void)sendData:(const string&)data forAction:(const string&)actionName{
-    HttpDataNotification::Ptr pNf = new HttpDataNotification;
-    pNf->setLogId([[ FCUUID uuid] UTF8String]);
-    pNf->setActionName ( actionName );
-    pNf->setData ( data );
-    pNf->setHdrData ( m_hdrString );
-    pNf->setPriority ( m_rptStrategy.getActionPriority ( actionName ) );
     
-    if ( m_strategyLoaded == 1 ) {
-        if ( m_sendQueue.size() > 1500 ) {
-        }
-        else {
-            m_sendQueue.enqueueNotification ( pNf, pNf->getPriority() );
-        }
+    int end = 1;
+    if( m_hdr.hasNextKey() )
+        end = 2;
+    
+    int start = 1;
+    if (actionName == "mbstartup" )
+    {
+        start = 2;
+        end = 2;
     }
-    else {
-        if ( m_cacheQueue.size() > 1500 ) {
+    
+    for( int n = start; n<= end;n++){
+        std::string hdrString = m_hdr.toString(n);
+        
+        HttpDataNotification::Ptr pNf = new HttpDataNotification;
+        pNf->setLogId([[ FCUUID uuid] UTF8String]);
+        pNf->setActionName ( actionName );
+        pNf->setData ( data );
+        pNf->setHdrData ( hdrString );
+        pNf->setPriority ( m_rptStrategy.getActionPriority ( actionName ) );
+        
+        if ( m_strategyLoaded == 1 ) {
+            if ( m_sendQueue.size() > 1500 ) {
+            }
+            else {
+                m_sendQueue.enqueueNotification ( pNf, pNf->getPriority() );
+            }
         }
         else {
-            m_cacheQueue.enqueueNotification ( pNf );
+            if ( m_cacheQueue.size() > 1500 ) {
+            }
+            else {
+                m_cacheQueue.enqueueNotification ( pNf );
+            }
         }
     }
 }
@@ -222,18 +239,20 @@ Poco::FastMutex m_mutex;
     
     [self fillSdkCallbackUsingDictionary:data];
     
-    RptHdrObj hdr ;
-    hdr.m_appkey = strappkey;
-    hdr.m_channel = strchannel;
-    hdr.m_osVendor = "Apple";
-    hdr.m_osType = "ios";
-    hdr.m_osVersion =[[[UIDevice currentDevice] systemVersion] UTF8String];
-    hdr.m_osName =[[[UIDevice currentDevice] systemName] UTF8String];
-    hdr.m_machindId = [[[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString] UTF8String];
-    hdr.m_SdkCallback = &m_sdkCallback;
-    hdr.m_statGuid = RptUtil::getGuidString();
+    //RptHdrObj hdr ;
+    m_hdr.m_appkey = strappkey;
+    m_hdr.m_secondAppKey = strappkey;
     
-    m_hdrString = hdr.toString();
+    m_hdr.m_channel = strchannel;
+    m_hdr.m_osVendor = "Apple";
+    m_hdr.m_osType = "ios";
+    m_hdr.m_osVersion =[[[UIDevice currentDevice] systemVersion] UTF8String];
+    m_hdr.m_osName =[[[UIDevice currentDevice] systemName] UTF8String];
+    m_hdr.m_machindId = [[[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString] UTF8String];
+    m_hdr.m_SdkCallback = &m_sdkCallback;
+    m_hdr.m_statGuid = RptUtil::getGuidString();
+    
+    //m_hdrString = m_hdr.toString();
     
     //启动加载策略线程，策略加载成功之前，数据保存在缓存队列
     m_StrategyHttpResuest = new HttpStrategyTask();
@@ -427,4 +446,10 @@ Poco::FastMutex m_mutex;
     string data = ml.toString();
     [self sendData:data forAction:"mblogin"];
 }
+
+-(void) switchAppKey:(NSString*)appkey{
+    string strKey = [self stringFromNSString:appkey];
+    m_hdr.m_secondAppKey = strKey;
+}
+
 @end
