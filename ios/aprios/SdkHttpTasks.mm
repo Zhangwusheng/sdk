@@ -164,7 +164,7 @@ void HttpTaskBase::runTask()
         <<"&clitime="<<dataPtr->getCliTime()
         <<"&"<<dataPtr->getData();
         
-        NSLog(@"Data=%@",[NSString stringWithUTF8String:ostm.str().c_str()]);
+//        NSLog(@"Data=%@",[NSString stringWithUTF8String:ostm.str().c_str()]);
         
         NSString* url=[NSString stringWithUTF8String:dataPtr->getSendUrl(m_strategy).c_str()];
         
