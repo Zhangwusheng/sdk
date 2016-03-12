@@ -8,12 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		1608A7801B87E9D600E363FB /* RptHdrObj.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1608A77E1B87E9D600E363FB /* RptHdrObj.cpp */; };
-		1608A7911B8843D900E363FB /* StrategyProtocol_KV.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1608A78F1B8843D900E363FB /* StrategyProtocol_KV.cpp */; };
 		1608A7941B886ACD00E363FB /* Protocols.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1608A7921B886ACD00E363FB /* Protocols.cpp */; };
 		163967FF1B8AE97500514CA1 /* FCUUID.m in Sources */ = {isa = PBXBuildFile; fileRef = 163967FB1B8AE97500514CA1 /* FCUUID.m */; };
 		163968001B8AE97500514CA1 /* UICKeyChainStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 163967FE1B8AE97500514CA1 /* UICKeyChainStore.m */; };
-		16A664721BE2046400FB091D /* RptUtil.mm in Sources */ = {isa = PBXBuildFile; fileRef = 16A664711BE2046400FB091D /* RptUtil.mm */; settings = {ASSET_TAGS = (); }; };
-		16A664AC1BE3B6D700FB091D /* HttpDataNotification.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 16A664AB1BE3B6D700FB091D /* HttpDataNotification.cpp */; settings = {ASSET_TAGS = (); }; };
+		16A664721BE2046400FB091D /* RptUtil.mm in Sources */ = {isa = PBXBuildFile; fileRef = 16A664711BE2046400FB091D /* RptUtil.mm */; };
+		16A664AC1BE3B6D700FB091D /* HttpDataNotification.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 16A664AB1BE3B6D700FB091D /* HttpDataNotification.cpp */; };
 		16D69B1F1B87145D00C4B95E /* libaprios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 16D69B131B87145D00C4B95E /* libaprios.a */; };
 		16D6A9C81B8715B000C4B95E /* Ascii.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 16D6A6E01B8715AE00C4B95E /* Ascii.cpp */; };
 		16D6A9CB1B8715B000C4B95E /* AtomicCounter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 16D6A6E31B8715AE00C4B95E /* AtomicCounter.cpp */; };
@@ -88,7 +87,6 @@
 		1608A77F1B87E9D600E363FB /* RptHdrObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RptHdrObj.h; sourceTree = "<group>"; };
 		1608A7881B88383300E363FB /* GlobalConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlobalConfig.h; sourceTree = "<group>"; };
 		1608A78C1B88419600E363FB /* StrategyProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StrategyProtocol.h; sourceTree = "<group>"; };
-		1608A78F1B8843D900E363FB /* StrategyProtocol_KV.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = StrategyProtocol_KV.cpp; sourceTree = "<group>"; };
 		1608A7901B8843D900E363FB /* StrategyProtocol_KV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StrategyProtocol_KV.h; sourceTree = "<group>"; };
 		1608A7921B886ACD00E363FB /* Protocols.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Protocols.cpp; sourceTree = "<group>"; };
 		1608A7931B886ACD00E363FB /* Protocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Protocols.h; sourceTree = "<group>"; };
@@ -572,7 +570,6 @@
 				16D6ABA61B8719DF00C4B95E /* SdkHttpTasks.h */,
 				16D6ABA51B8719DF00C4B95E /* SdkHttpTasks.mm */,
 				16D6ABA21B8719DF00C4B95E /* SerDerUtil.h */,
-				1608A78F1B8843D900E363FB /* StrategyProtocol_KV.cpp */,
 				1608A7901B8843D900E363FB /* StrategyProtocol_KV.h */,
 				1608A78C1B88419600E363FB /* StrategyProtocol.h */,
 			);
@@ -966,11 +963,11 @@
 		16D6A6DB1B8715AE00C4B95E /* src */ = {
 			isa = PBXGroup;
 			children = (
-				16D6AB821B8716B100C4B95E /* Bugcheck.cpp */,
 				16D6A6E01B8715AE00C4B95E /* Ascii.cpp */,
 				16D6A6E31B8715AE00C4B95E /* AtomicCounter.cpp */,
 				16D6A6E61B8715AE00C4B95E /* Base64Decoder.cpp */,
 				16D6A6E71B8715AE00C4B95E /* Base64Encoder.cpp */,
+				16D6AB821B8716B100C4B95E /* Bugcheck.cpp */,
 				16D6A6FC1B8715AE00C4B95E /* DateTime.cpp */,
 				16D6A6FD1B8715AE00C4B95E /* DateTimeFormat.cpp */,
 				16D6A6FE1B8715AE00C4B95E /* DateTimeFormatter.cpp */,
@@ -1121,7 +1118,6 @@
 				16D6A9E71B8715B000C4B95E /* DigestEngine.cpp in Sources */,
 				16D6A9E41B8715B000C4B95E /* Debugger.cpp in Sources */,
 				16D6A9FB1B8715B000C4B95E /* Event.cpp in Sources */,
-				1608A7911B8843D900E363FB /* StrategyProtocol_KV.cpp in Sources */,
 				16D6A9E31B8715B000C4B95E /* DateTimeParser.cpp in Sources */,
 				16D6AA511B8715B000C4B95E /* NumericString.cpp in Sources */,
 				16D6AA831B8715B000C4B95E /* Runnable.cpp in Sources */,
