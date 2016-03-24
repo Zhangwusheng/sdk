@@ -11,35 +11,26 @@ using namespace std;
 #pragma mark - 失败发送逻辑 -
 void HttpSendQueuDataTask::pushBackData(HttpDataNotification::Ptr data)
 {
-//    NSLog(@"in HttpSendQueuDataTask::pushBackData");
     if( data->getFailedCount() <= m_nTrys ){
-//        NSLog(@"FailedCount=%d,<=m_nTrys(%d)",data->getFailedCount(),m_nTrys);
         m_sendQueue.enqueueNotification(data, data->getPriority());
     }
     else{
-//        NSLog(@"FailedCount=%d,>m_nTrys(%d)",data->getFailedCount(),m_nTrys);
         m_failQueue.enqueueNotification(data);
     }
 }
 
 void HttpFailedQueuDataTask::pushBackData(HttpDataNotification::Ptr data)
 {
-//    NSLog(@"in HttpFailedQueuDataTask::pushBackData");
-//    NSLog(@" ... failedCount = %d",data->getFailedCount() );
     if( data->getFailedCount() <= m_nTrys+3 ){
-        //Poco::Thread::sleep((1+m_nTrys)*1000);
-//        NSLog(@"Sleeping ... failedCount = %d",data->getFailedCount() );
         Poco::Thread::sleep(10000);
         m_failQueue.enqueueNotification(data);
     }
     else{
-//        NSLog(@"Discard ... failedCount = %d",data->getFailedCount() );
         //Just Discard it !
     }
 }
 
 void HttpFailedQueuDataTask::flushDataToLocalDisk(){
-//    NSLog(@"calling HttpFailedQueuDataTask::flushDataToLocalDisk");
     if( m_failQueue.empty())
         return;
     
@@ -48,7 +39,6 @@ void HttpFailedQueuDataTask::flushDataToLocalDisk(){
     if(!ofs)
         return;
     
-//    NSLog(@"flushing fail queue to disk");
     while(!m_failQueue.empty()){
         Poco::Notification::Ptr ptr = m_failQueue.dequeueNotification();
         HttpDataNotification::Ptr data = ptr.cast<HttpDataNotification>();
@@ -59,7 +49,7 @@ void HttpFailedQueuDataTask::flushDataToLocalDisk(){
 }
 
 void HttpFailedQueuDataTask::loadDataFromLocalDisk(){
-//    NSLog(@"calling HttpFailedQueuDataTask::loadDataFromLocalDisk");
+
     string fileName = RptUtil::getFailQueueFileName();
     {
         ifstream ifs(fileName.c_str());
@@ -99,7 +89,7 @@ HttpDataNotification::Ptr HttpFailedQueuDataTask::getOneData(){
 }
 
 void HttpSendQueuDataTask::flushDataToLocalDisk(){
-//    NSLog(@"calling HttpSendQueuDataTask::flushDataToLocalDisk");
+
     if( m_sendQueue.empty())
         return;
     
@@ -107,8 +97,8 @@ void HttpSendQueuDataTask::flushDataToLocalDisk(){
     ofstream ofs(fileName.c_str());
     if(!ofs)
         return;
-//    NSLog(@"flushing send queue to disk");
-   
+
+    
     while(!m_sendQueue.empty()){
         Poco::Notification::Ptr ptr = m_sendQueue.dequeueNotification();
         HttpDataNotification::Ptr data = ptr.cast<HttpDataNotification>();
@@ -120,7 +110,7 @@ void HttpSendQueuDataTask::flushDataToLocalDisk(){
 }
 
 void HttpSendQueuDataTask::loadDataFromLocalDisk(){
-//    NSLog(@"calling HttpSendQueuDataTask::loadDataFromLocalDisk");
+
     string fileName = RptUtil::getSendQueueFileName();
     {
         ifstream ifs(fileName.c_str());
@@ -164,17 +154,15 @@ void HttpTaskBase::runTask()
         <<"&clitime="<<dataPtr->getCliTime()
         <<"&"<<dataPtr->getData();
         
-//        NSLog(@"Data=%@",[NSString stringWithUTF8String:ostm.str().c_str()]);
-        
         NSString* url=[NSString stringWithUTF8String:dataPtr->getSendUrl(m_strategy).c_str()];
-        
-//        NSLog(@"Sending to Url:%@",url);
-        
+                
         NSMutableURLRequest * request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
         
         request.HTTPMethod = @"POST";
         request.HTTPBody = [[
                              [NSString alloc] initWithUTF8String:ostm.str().c_str()] dataUsingEncoding:NSUTF8StringEncoding];
+        
+        NSLog(@"****\n%@****\n",[NSString stringWithUTF8String:ostm.str().c_str()]);
         
         [request setValue:@"AprSdkIOS" forHTTPHeaderField:@"User-Agent"];
         NSURLResponse * response = nil;

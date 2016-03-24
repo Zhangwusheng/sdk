@@ -49,6 +49,7 @@ HttpStrategyTask* m_StrategyHttpResuest;
 //Poco::AtomicCounter m_isRunning;
 Poco::FastMutex m_mutex;
 RptHdrObj m_hdr ;
+std::string m_playId;
 
 #pragma mark - 单例对象 -
 + (instancetype)shareStatSDK{
@@ -63,6 +64,10 @@ RptHdrObj m_hdr ;
 }
 
 #pragma mark - 工具 -
+-(std::string) newPlayId{
+    return [[ FCUUID uuid] UTF8String];
+}
+
 -(std::string)stringFromNSString:(NSString*)nsstr{
     if( nsstr == nil)
         return "";
@@ -454,4 +459,30 @@ RptHdrObj m_hdr ;
     m_hdr.m_secondAppKey = strKey;
 }
 
+-(void)reportVideoPlay:(NSString*)videoId
+             isNewPlay:(BOOL)isNew
+          withHeadTime:(int)headTime
+          withDuration:(long)duration
+       fromVideoSource:(int)source
+        andSourceCheck:(int)check
+         forPlayerType:(int)type
+            isVideoEnd:(int)endFlag{
+    
+    if (isNew) {
+        m_playId = [self newPlayId];
+    }
+    
+    mbvideoplayduration mbvpd;
+    mbvpd.playid = m_playId;
+    mbvpd.headtime =headTime;
+    mbvpd.source = source;
+    mbvpd.sourcecheck = check;
+    mbvpd.type = 20;
+    mbvpd.videoid = [ videoId UTF8String];
+    mbvpd.duration = duration;
+    mbvpd.endflag = endFlag;
+    
+    string data = mbvpd.toString();
+    [self sendData:data forAction:"mbvideoplayduration"];
+}
 @end

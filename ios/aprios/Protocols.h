@@ -67,4 +67,20 @@ public:
     
     std::string toString();
 };
+
+
+class mbvideoplayduration
+{
+public:
+    std::string videoid;
+    std::string playid;
+    long headtime;
+    long duration;
+    int source;
+    int sourcecheck;
+    int type;
+    int endflag;
+    
+    std::string toString();
+};
 #endif /* defined(__aprios__mbstartup__) */

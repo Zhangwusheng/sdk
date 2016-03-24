@@ -80,6 +80,29 @@ std::string mblogin::toString(){
     
     return result;
 }
+
+std::string mbvideoplayduration::toString(){
+
+    string result;
+    result.append("playid=");
+    result.append(SerDerUtil::toBase64(this->playid));
+    result.append("&duration=");
+    result.append(SerDerUtil::toBase64(Poco::NumberFormatter::format(this->duration)));
+    result.append("&headtime=");
+    result.append(SerDerUtil::toBase64(Poco::NumberFormatter::format(this->headtime)));
+    result.append("&endflag=");
+    result.append(SerDerUtil::toBase64(Poco::NumberFormatter::format(this->endflag)));
+    result.append("&src=");
+    result.append(SerDerUtil::toBase64(Poco::NumberFormatter::format(this->source)));
+    result.append("&srccheck=");
+    result.append(SerDerUtil::toBase64(Poco::NumberFormatter::format(this->sourcecheck)));
+    result.append("&playerlocation=");
+    result.append(SerDerUtil::toBase64(Poco::NumberFormatter::format(this->type)));
+    result.append("&videoid=");
+    result.append(SerDerUtil::toBase64(this->videoid));
+    
+    return result;
+}
 #else
 
 //#include "mbstartup.pb.h"
