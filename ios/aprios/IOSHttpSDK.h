@@ -100,4 +100,9 @@
         andSourceCheck:(int)check
          forPlayerType:(int)type
             isVideoEnd:(int)endFlag;
+
+/**
+ * appStartLaunchWithAppKey初始化的时候提供了withData，SDK会把这些变量保存到自己的变量中。这其实是应用的所有的状态与SDK的交互接口。由于业务状态可能在任何地方变化，因此这些也必须反应到SDK当中，以便在其中应用。所以提供了了这个接口。任何变化都会合并到初始化时保存的那个Dict中。比如，开始时用户没有登录，获取UID会为空。但是登陆后UID就不为空了。此时可以将"userid"=>bid，作为newData，合并到SDK里面去。
+ */
+-(void)mergeData:(NSDictionary*) newData;
 @end

@@ -100,6 +100,8 @@ std::string mbvideoplayduration::toString(){
     result.append(SerDerUtil::toBase64(Poco::NumberFormatter::format(this->type)));
     result.append("&videoid=");
     result.append(SerDerUtil::toBase64(this->videoid));
+    result.append("&userid=");
+    result.append(SerDerUtil::toBase64(this->uid));
     
     return result;
 }

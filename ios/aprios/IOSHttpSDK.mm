@@ -39,17 +39,14 @@ Poco::PriorityNotificationQueue m_sendQueue;
 Poco::NotificationQueue m_failedQueue;
 Poco::NotificationQueue m_cacheQueue;
 RptStrategy m_rptStrategy;
-//Poco::SharedPtr<Poco::TaskManager> m_taskManager;
 Poco::TaskManager* m_taskManager;
 Poco::AtomicCounter m_strategyLoaded;
-//std::string m_hdrString;
 map<string,mbpageview> m_pageview;
-//Poco::SharedPtr<HttpStrategyTask> m_StrategyHttpResuest;
 HttpStrategyTask* m_StrategyHttpResuest;
-//Poco::AtomicCounter m_isRunning;
 Poco::FastMutex m_mutex;
 RptHdrObj m_hdr ;
 std::string m_playId;
+NSMutableDictionary* m_CallbackDict;
 
 #pragma mark - 单例对象 -
 + (instancetype)shareStatSDK{
@@ -234,6 +231,8 @@ std::string m_playId;
                      withChannel:(NSString*)channel
                         withData:(NSDictionary*)data{
     m_strategyLoaded = 0;
+    m_CallbackDict = [NSMutableDictionary dictionary];
+    [m_CallbackDict addEntriesFromDictionary:data];
     
     if(!RptUtil::ensureBaseDirExists()){
         NSLog(@"Failed to create sdk base dir");
@@ -482,7 +481,18 @@ std::string m_playId;
     mbvpd.duration = duration;
     mbvpd.endflag = endFlag;
     
+    if( m_CallbackDict != nil ){
+        NSString* userid = [ m_CallbackDict objectForKey:@"userid"];
+        if (userid != nil) {
+            mbvpd.uid = [ userid UTF8String  ];
+        }
+    }
+
     string data = mbvpd.toString();
     [self sendData:data forAction:"mbvideoplayduration"];
+}
+
+-(void) mergeData:(NSDictionary *)newData{
+    [ m_CallbackDict addEntriesFromDictionary:newData ];
 }
 @end

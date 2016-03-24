@@ -80,6 +80,7 @@ public:
     int sourcecheck;
     int type;
     int endflag;
+    std::string uid;
     
     std::string toString();
 };
