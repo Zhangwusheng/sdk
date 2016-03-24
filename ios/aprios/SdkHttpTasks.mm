@@ -162,7 +162,7 @@ void HttpTaskBase::runTask()
         request.HTTPBody = [[
                              [NSString alloc] initWithUTF8String:ostm.str().c_str()] dataUsingEncoding:NSUTF8StringEncoding];
         
-        NSLog(@"****\n%@****\n",[NSString stringWithUTF8String:ostm.str().c_str()]);
+        //NSLog(@"****\n%@****\n",[NSString stringWithUTF8String:ostm.str().c_str()]);
         
         [request setValue:@"AprSdkIOS" forHTTPHeaderField:@"User-Agent"];
         NSURLResponse * response = nil;
