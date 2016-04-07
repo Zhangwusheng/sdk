@@ -64,7 +64,7 @@ public:
     //拍子号:pzh,微信:wx,QQ:qq,微博：wb,手机：sj，邮箱：yx
     std::string type;
     std::string direction;   //0:自动登录，1：手动登录，2：登出
-    
+    std::string login_status;//登录成功还是失败
     std::string toString();
 };
 

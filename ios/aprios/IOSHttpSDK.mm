@@ -442,13 +442,14 @@ NSMutableDictionary* m_CallbackDict;
     [ self sendData:dictString forAction:saction];
 }
 
--(void) loginEvent:(NSString *)bid forLogName:(NSString *)logName withType:(NSString *)type andDirection:(NSString *)direction{
+-(void) loginEvent:(NSString *)bid forLogName:(NSString *)logName withType:(NSString *)type andDirection:(NSString *)direction loginStatus:(NSString*)status{
     
     mblogin ml;
     ml.bid = [bid UTF8String];
     ml.loginid=[logName UTF8String ];
     ml.type = [type UTF8String];
     ml.direction = [direction UTF8String];
+    ml.login_status = [status UTF8String];
     string data = ml.toString();
     [self sendData:data forAction:"mblogin"];
 }

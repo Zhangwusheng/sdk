@@ -69,14 +69,16 @@ std::string pubvideocost::toString(){
 
 std::string mblogin::toString(){
     string result;
-    result.append("bid=");
+    result.append("pzid=");
     result.append(SerDerUtil::toBase64(this->bid));
     result.append("&loginid=");
     result.append(SerDerUtil::toBase64(this->loginid));
-    result.append("&type=");
+    result.append("&logintype=");
     result.append(SerDerUtil::toBase64(this->type));
     result.append("&direction=");
     result.append(SerDerUtil::toBase64(this->direction));
+    result.append("&loginstatus=");
+    result.append(SerDerUtil::toBase64(this->login_status));
     
     return result;
 }

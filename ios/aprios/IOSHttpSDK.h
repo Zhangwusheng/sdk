@@ -63,7 +63,7 @@
 -(void) sendDictData:(NSDictionary *)data forAction:(NSString *)action;
 
 /**具体参数含义参见Protocols.h mblogin的字段说明*/
--(void) loginEvent:(NSString*)bid forLogName:(NSString*)logName withType:(NSString*)type andDirection:(NSString*)direction;
+-(void) loginEvent:(NSString*)bid forLogName:(NSString*)logName withType:(NSString*)type andDirection:(NSString*)direction loginStatus:(NSString*)status;
 
 -(void) pubVideoNetSpeed:(NSString*)speed andPubTimeCost:(NSString*)cost;
 #pragma mark - 策略加载(SDK内部使用) -
