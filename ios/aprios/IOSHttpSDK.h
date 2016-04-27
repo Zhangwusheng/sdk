@@ -105,4 +105,15 @@
  * appStartLaunchWithAppKey初始化的时候提供了withData，SDK会把这些变量保存到自己的变量中。这其实是应用的所有的状态与SDK的交互接口。由于业务状态可能在任何地方变化，因此这些也必须反应到SDK当中，以便在其中应用。所以提供了了这个接口。任何变化都会合并到初始化时保存的那个Dict中。比如，开始时用户没有登录，获取UID会为空。但是登陆后UID就不为空了。此时可以将"userid"=>bid，作为newData，合并到SDK里面去。
  */
 -(void)mergeData:(NSDictionary*) newData;
+
+/**
+ * 启用崩溃自动捕捉机制(未捕捉的异常或者信号)。SDK自动捕捉崩溃，并且记录在本地，当程序下次启动时，优先上报崩溃的数据。
+ */
+-(void) enableAutoDumpUncaughtException;
+-(void) disableAutoDumpUncaughtException;
+/**
+ * 开发者自己捕捉到异常后，如果需要上报，调用这个接口。此接口的异常时应用异常，不会导致程序退出。
+ * 是异常，不是崩溃。
+ */
+-(void) logError:(NSException*)exception;
 @end

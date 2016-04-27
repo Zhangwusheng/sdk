@@ -71,12 +71,6 @@ public:
         this->enabled = true;
         this->domainRetryCount = 2;
         
-//        this->iplist.push_back("14.29.84.204");
-//        this->iplist.push_back("14.29.84.205");
-//        this->iplist.push_back("14.29.84.206");
-//        this->iplist.push_back("14.29.84.207");
-//        this->iplist.push_back("14.29.84.208");
-//        this->iplist.push_back("14.29.84.209");
         this->iplist.push_back("219.135.99.168");
         this->iplist.push_back("122.13.76.219");
         this->iplist.push_back("219.135.99.167");
@@ -98,6 +92,8 @@ public:
         this->actionPriority["mbstartup"]=1000;
         this->actionPriority["pcstartup"]=1000;
         this->actionPriority["mbpageview"]=1000;
+        this->actionPriority["mbdumpexcept"]=3000;
+        this->actionPriority["mbdumpsignal"]=3000;
         this->defaultPriority = 10;
         this->eventPartition = 0;
         this->sendThreadNum = 2;

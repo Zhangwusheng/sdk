@@ -9,6 +9,9 @@
 #import <Foundation/Foundation.h>
 #import <AdSupport/ASIdentifierManager.h>
 #import <UIKit/UIDevice.h>
+#include <libkern/OSAtomic.h>
+#include <execinfo.h>
+
 #import "IOSHttpSDK.h"
 #import "../Base64/Base64.h"
 #import "../FCUUID/FCUUID.h"
@@ -29,9 +32,29 @@
 #include "RptUtil.h"
 
 #include <iostream>
+#include <fstream>
 #include <string>
 using namespace std;
 
+static void InstallUncaughtExceptionHandler(void);
+static void UninstallUncaughtExceptionHandler(void);
+static void HandleException(NSException *exception);
+static void SignalHandler(int signal);
+
+NSString * const UncaughtExceptionHandlerSignalExceptionName = @"UncaughtExceptionHandlerSignalExceptionName";
+NSString * const UncaughtExceptionHandlerSignalKey = @"UncaughtExceptionHandlerSignalKey";
+NSString * const UncaughtExceptionHandlerAddressesKey = @"UncaughtExceptionHandlerAddressesKey";
+
+volatile int32_t UncaughtExceptionCount = 0;
+const int32_t UncaughtExceptionMaximum = 10;
+
+const NSInteger UncaughtExceptionHandlerSkipAddressCount = 4;
+const NSInteger UncaughtExceptionHandlerReportAddressCount = 5;
+
+static NSUncaughtExceptionHandler* preNSUncaughtExceptionHandler = nil;
+
+
+#pragma mark - SDK实现 -
 
 @implementation IOSHttpSDK
 DefaultSdkCallback m_sdkCallback;
@@ -47,6 +70,8 @@ Poco::FastMutex m_mutex;
 RptHdrObj m_hdr ;
 std::string m_playId;
 NSMutableDictionary* m_CallbackDict;
+
+
 
 #pragma mark - 单例对象 -
 + (instancetype)shareStatSDK{
@@ -73,6 +98,22 @@ NSMutableDictionary* m_CallbackDict;
 
 -(NSString*)nsstringFromStdString:(const std::string&)str{
     return [NSString stringWithUTF8String:str.c_str()];
+}
+
+-(mberrorreport)nsException2mberrorreport:(NSException*) exception{
+    mberrorreport s;
+    s.name = [[ exception name ] UTF8String];
+    s.reason = [[exception reason] UTF8String];
+    
+    NSArray<NSString*>* symbols =  [exception callStackSymbols];
+    for (int i=0; i<[symbols count]; i++) {
+        NSString* str = [symbols objectAtIndex:i ];
+        //NSLog(@"%@",str);
+        s.items.push_back( [ str UTF8String]);
+    }
+    s.itemcount = (int)s.items.size();
+    
+    return s;
 }
 
 -(string) dict2KVString:(NSDictionary*)dict{
@@ -281,6 +322,7 @@ NSMutableDictionary* m_CallbackDict;
     sendFailDataTask->loadDataFromLocalDisk();
     m_taskManager->start ( sendFailDataTask.duplicate() );
     
+//    InstallUncaughtExceptionHandler();
 }
 
 -(void) quit{
@@ -496,4 +538,192 @@ NSMutableDictionary* m_CallbackDict;
 -(void) mergeData:(NSDictionary *)newData{
     [ m_CallbackDict addEntriesFromDictionary:newData ];
 }
+
+
++ (NSArray *)backtrace
+{
+    void* callstack[128];
+    int frames = backtrace(callstack, 128);
+    char **strs = backtrace_symbols(callstack, frames);
+    
+    int i;
+    NSMutableArray *backtrace = [NSMutableArray arrayWithCapacity:frames];
+    for (
+         i = UncaughtExceptionHandlerSkipAddressCount;
+         i < UncaughtExceptionHandlerSkipAddressCount +
+         UncaughtExceptionHandlerReportAddressCount;
+         i++)
+    {
+        [backtrace addObject:[NSString stringWithUTF8String:strs[i]]];
+    }
+    free(strs);
+    
+    return backtrace;
+}
+
+-(void) logError:(NSException*)exception{
+    
+    mberrorreport mber = [ self nsException2mberrorreport:exception ];
+
+    [self sendData:mber.toString() forAction:"mberror"];
+    
+}
+
+- (void)handleException:(NSException *)exception
+{
+    mberrorreport mber = [ self nsException2mberrorreport:exception ];
+
+    
+    string actionName = "mbdumpexcept";
+    
+    HttpDataNotification::Ptr pNf = new HttpDataNotification;
+    pNf->setLogId([[ FCUUID uuid] UTF8String]);
+    pNf->setActionName ( actionName );
+    pNf->setData ( mber.toString() );
+    
+    std::string hdrString;
+    if( m_hdr.hasNextKey())
+        hdrString = m_hdr.toString(2);
+    else
+        hdrString = m_hdr.toString(1);
+    
+    pNf->setHdrData ( hdrString );
+    pNf->setPriority ( m_rptStrategy.getActionPriority ( actionName ) );
+  
+    
+    string fileName = RptUtil::getExceptionLogFileName();
+    {
+        ofstream ofs(fileName.c_str());
+        ofs << pNf->serialize()<<endl;
+    }
+    NSLog(@"----------------------------------");
+    NSLog(@"************Exception******:\n%@",[NSString stringWithUTF8String:mber.toString().c_str()]);
+    NSLog(@"----------------------------------");
+}
+
+-(void)handleSignal:(int)signal
+{
+    NSMutableDictionary *userInfo =[NSMutableDictionary
+                                    dictionaryWithObject:[NSNumber numberWithInt:signal]
+                                    forKey:UncaughtExceptionHandlerSignalKey];
+    
+    NSArray *callStack = [IOSHttpSDK backtrace];
+    [userInfo
+     setObject:callStack
+     forKey:UncaughtExceptionHandlerAddressesKey];
+    
+    
+    NSString* reason = [NSString stringWithFormat:
+                        NSLocalizedString(@"Signal %d was raised.", nil),
+                        signal];
+    
+    NSException* exception = [NSException exceptionWithName:   UncaughtExceptionHandlerSignalExceptionName
+                reason:reason userInfo:userInfo];
+    
+    mberrorreport mber = [ self nsException2mberrorreport:exception ];
+    
+    string actionName = "mbdumpsignal";
+    
+    HttpDataNotification::Ptr pNf = new HttpDataNotification;
+    pNf->setLogId([[ FCUUID uuid] UTF8String]);
+    pNf->setActionName ( actionName );
+    pNf->setData ( mber.toString() );
+    
+    std::string hdrString;
+    if( m_hdr.hasNextKey())
+        hdrString = m_hdr.toString(2);
+    else
+        hdrString = m_hdr.toString(1);
+    
+    pNf->setHdrData ( hdrString );
+    pNf->setPriority ( m_rptStrategy.getActionPriority ( actionName ) );
+    
+    
+    string fileName = RptUtil::getSignalLogFileName();
+    {
+        ofstream ofs(fileName.c_str());
+        ofs << pNf->serialize()<<endl;
+    }
+    
+    NSLog(@"----------------------------------");
+    NSLog(@"************Exception******:\n%@",[NSString stringWithUTF8String:mber.toString().c_str()]);
+    NSLog(@"----------------------------------");
+
+}
+
+-(void) enableAutoDumpUncaughtException{
+    InstallUncaughtExceptionHandler();
+}
+
+-(void) disableAutoDumpUncaughtException{
+    UninstallUncaughtExceptionHandler();
+}
+
 @end
+
+void HandleException(NSException *exception )
+{
+    [[IOSHttpSDK shareStatSDK] handleException:exception  ];
+    
+    if( preNSUncaughtExceptionHandler == nil){
+        [exception raise];
+    }
+    else{
+        preNSUncaughtExceptionHandler( exception );
+    }
+//    int32_t exceptionCount = OSAtomicIncrement32(&UncaughtExceptionCount);
+//    if (exceptionCount > UncaughtExceptionMaximum)
+//    {
+//        return;
+//    }
+    
+//    NSArray *callStack = [IOSHttpSDK backtrace];
+    
+//    NSMutableDictionary *userInfo =
+//    [NSMutableDictionary
+//     dictionaryWithObject:[NSNumber numberWithInt:-1]
+//     forKey:UncaughtExceptionHandlerSignalKey];
+//    
+//    [userInfo addEntriesFromDictionary:[exception userInfo]];
+//    
+//    //    userInfo =
+//    //    [NSMutableDictionary dictionaryWithDictionary:[exception userInfo]];
+//    [userInfo
+//     setObject:callStack
+//     forKey:UncaughtExceptionHandlerAddressesKey];
+//    
+//    NSException* mexception = [NSException exceptionWithName:[exception name] reason:[exception reason] userInfo:userInfo];
+    
+}
+
+void SignalHandler(int signal)
+{
+//    int32_t exceptionCount = OSAtomicIncrement32(&UncaughtExceptionCount);
+    [[IOSHttpSDK shareStatSDK] handleSignal:signal ];
+}
+
+void InstallUncaughtExceptionHandler(void)
+{
+//    NSLog(@"InstallUncaughtExceptionHandler Called......");
+    
+    preNSUncaughtExceptionHandler = NSGetUncaughtExceptionHandler();
+    NSSetUncaughtExceptionHandler(&HandleException);
+    signal(SIGABRT, SignalHandler);
+    signal(SIGILL, SignalHandler);
+    signal(SIGSEGV, SignalHandler);
+    signal(SIGFPE, SignalHandler);
+    signal(SIGBUS, SignalHandler);
+    signal(SIGPIPE, SignalHandler);
+}
+
+void UninstallUncaughtExceptionHandler(void)
+{
+    NSSetUncaughtExceptionHandler(NULL);
+    signal(SIGABRT, SIG_DFL);
+    signal(SIGILL, SIG_DFL);
+    signal(SIGSEGV, SIG_DFL);
+    signal(SIGFPE, SIG_DFL);
+    signal(SIGBUS, SIG_DFL);
+    signal(SIGPIPE, SIG_DFL);
+}
+

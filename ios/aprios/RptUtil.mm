@@ -27,6 +27,20 @@
 }
 @end
 
+std::string RptUtil::getExceptionLogFileName()
+{
+    NSString* baseDir = [NSRptUtil getRptBaseDir];
+    NSString* fileName = [baseDir stringByAppendingPathComponent:@"except.dat"];
+    return std::string([ fileName UTF8String]);
+}
+
+std::string RptUtil::getSignalLogFileName()
+{
+    NSString* baseDir = [NSRptUtil getRptBaseDir];
+    NSString* fileName = [baseDir stringByAppendingPathComponent:@"signal.dat"];
+    return std::string([ fileName UTF8String]);
+}
+
 bool RptUtil::ensureBaseDirExists(){
     NSString* aprDirName = [NSRptUtil getRptBaseDir];
 //    NSLog(@"document dir is :%@",aprDirName);

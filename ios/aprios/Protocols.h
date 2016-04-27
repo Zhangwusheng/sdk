@@ -10,6 +10,7 @@
 #define __aprios__mbstartup__
 
 #include <string>
+#include <vector>
 
 class mbstartup
 {
@@ -83,5 +84,17 @@ public:
     std::string uid;
     
     std::string toString();
+};
+
+class mberrorreport
+{
+public:
+    int signal;
+    std::string name;
+    std::string reason;
+    std::vector<std::string> items;
+    int itemcount;
+    std::string toString();
+
 };
 #endif /* defined(__aprios__mbstartup__) */

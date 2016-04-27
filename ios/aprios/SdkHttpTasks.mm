@@ -111,27 +111,56 @@ void HttpSendQueuDataTask::flushDataToLocalDisk(){
 
 void HttpSendQueuDataTask::loadDataFromLocalDisk(){
 
-    string fileName = RptUtil::getSendQueueFileName();
+    //加载崩溃日志数据
     {
-        ifstream ifs(fileName.c_str());
-        if(!ifs)
-            return;
-        
-        char line[2048];
-        while (ifs.getline(line, sizeof(line))) {
-            HttpDataNotification::Ptr data = new HttpDataNotification;
-            if( data->deserialize(line))
-            {
-                data->setOwner(this);
-                //这一步有必要
-                data->setPriority(this->m_strategy->getActionPriority(data->getActionName()));
-                this->m_sendQueue.enqueueNotification(data,data->getPriority());
+        string fileName = RptUtil::getExceptionLogFileName();
+        {
+            ifstream ifs(fileName.c_str());
+            if(!ifs)
+                return;
+            
+            char line[2048];
+            while (ifs.getline(line, sizeof(line))) {
+                HttpDataNotification::Ptr data = new HttpDataNotification;
+                if( data->deserialize(line))
+                {
+                    data->setOwner(this);
+                    //这一步有必要
+                    data->setPriority(this->m_strategy->getActionPriority(data->getActionName()));
+                    this->m_sendQueue.enqueueNotification(data,data->getPriority());
+                }
             }
         }
+        {
+            ofstream ofs(fileName.c_str());
+            ofs<<endl;
+        }
     }
+    //加载日志数据
     {
-        ofstream ofs(fileName.c_str());
-        ofs<<endl;
+        
+        string fileName = RptUtil::getSendQueueFileName();
+        {
+            ifstream ifs(fileName.c_str());
+            if(!ifs)
+                return;
+            
+            char line[2048];
+            while (ifs.getline(line, sizeof(line))) {
+                HttpDataNotification::Ptr data = new HttpDataNotification;
+                if( data->deserialize(line))
+                {
+                    data->setOwner(this);
+                    //这一步有必要
+                    data->setPriority(this->m_strategy->getActionPriority(data->getActionName()));
+                    this->m_sendQueue.enqueueNotification(data,data->getPriority());
+                }
+            }
+        }
+        {
+            ofstream ofs(fileName.c_str());
+            ofs<<endl;
+        }
     }
 }
 #pragma mark - HTTP发送数据 -
@@ -162,7 +191,7 @@ void HttpTaskBase::runTask()
         request.HTTPBody = [[
                              [NSString alloc] initWithUTF8String:ostm.str().c_str()] dataUsingEncoding:NSUTF8StringEncoding];
         
-        NSLog(@"****\n%@****\n",[NSString stringWithUTF8String:ostm.str().c_str()]);
+//        NSLog(@"****\n%@****\n",[NSString stringWithUTF8String:ostm.str().c_str()]);
         
         [request setValue:@"AprSdkIOS" forHTTPHeaderField:@"User-Agent"];
         NSURLResponse * response = nil;

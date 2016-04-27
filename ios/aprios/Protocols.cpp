@@ -10,6 +10,7 @@
 #include "SerDerUtil.h"
 #if DATA_SERDER_CUR == DATA_SERDER_KV
 #include "Poco/NumberFormatter.h"
+#include "Poco/String.h"
 
 using namespace std;
 
@@ -106,6 +107,29 @@ std::string mbvideoplayduration::toString(){
     result.append(SerDerUtil::toBase64(this->uid));
     
     return result;
+}
+
+std::string mberrorreport::toString()
+{
+    std::string result;
+    result.append("name=");
+    result.append(SerDerUtil::toBase64(this->name));
+    result.append("&reason=");
+//    Poco::translateInPlace(reason," \t\n","|||");
+    result.append(SerDerUtil::toBase64(this->reason));
+    result.append("&itemcount=");
+    result.append(SerDerUtil::toBase64(Poco::NumberFormatter::format(items.size())));
+    result.append("&signal=");
+    result.append(SerDerUtil::toBase64(Poco::NumberFormatter::format(signal)));
+    
+    for(int i=1;i<=items.size();i++){
+        result.append("&item");
+        result.append(Poco::NumberFormatter::format(i));
+        result.append("=");
+        result.append(SerDerUtil::toBase64(items[i-1]));
+    }
+    return result;
+    
 }
 #else
 

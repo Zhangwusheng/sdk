@@ -41,6 +41,11 @@ public:
      * 把策略内容写入本地目录
      */
     static bool writeStrategyStringToLocal(const std::string& strategy);
+    /***
+     * 把错误写入到本地文件中去
+     */
+    static std::string getExceptionLogFileName();
+    static std::string getSignalLogFileName();
 };
 
 #endif

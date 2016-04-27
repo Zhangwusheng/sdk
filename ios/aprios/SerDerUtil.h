@@ -16,6 +16,7 @@
 #include "Poco/Base64Decoder.h"
 #include "Poco/NumberFormatter.h"
 #include "Poco/Exception.h"
+#include "Poco/String.h"
 
 namespace SerDerUtil
 {
@@ -36,7 +37,11 @@ namespace SerDerUtil
              std::istreambuf_iterator<char>(),
              std::ostreambuf_iterator<char>(encoder));
         encoder.close();
-        return str.str() ;
+        
+        std::string r = str.str();
+        Poco::replaceInPlace(r, "\r", "");
+        Poco::replaceInPlace(r, "\n", "");
+        return r ;
     }
     
     inline std::string fromBase64(const std::string& src){
