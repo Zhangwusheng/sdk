@@ -22,6 +22,7 @@
 #include "Poco/Environment.h"
 #include "Poco/NotificationQueue.h"
 #include "Poco/PriorityNotificationQueue.h"
+#include "Poco/Timer.h"
 
 #include "SdkHttpTasks.h"
 #include "RptHdrObj.h"
@@ -36,6 +37,7 @@
 #include <string>
 using namespace std;
 
+#pragma mark - 崩溃函数声明 -
 static void InstallUncaughtExceptionHandler(void);
 static void UninstallUncaughtExceptionHandler(void);
 static void HandleException(NSException *exception);
@@ -54,6 +56,19 @@ const NSInteger UncaughtExceptionHandlerReportAddressCount = 5;
 static NSUncaughtExceptionHandler* preNSUncaughtExceptionHandler = nil;
 
 
+class HeartbeatAction
+{
+public:
+    HeartbeatAction();
+    void onTimer(Poco::Timer& timer);
+
+private:
+    std::string  m_clitime;
+    Poco::Timestamp m_ts;
+    std::string m_sessionId;
+    Poco::Timestamp::TimeDiff m_span;
+};
+
 #pragma mark - SDK实现 -
 
 @implementation IOSHttpSDK
@@ -69,6 +84,8 @@ HttpStrategyTask* m_StrategyHttpResuest;
 Poco::FastMutex m_mutex;
 RptHdrObj m_hdr ;
 std::string m_playId;
+Poco::Timer* m_timer;
+HeartbeatAction m_hbAction;
 NSMutableDictionary* m_CallbackDict;
 
 
@@ -100,21 +117,6 @@ NSMutableDictionary* m_CallbackDict;
     return [NSString stringWithUTF8String:str.c_str()];
 }
 
--(mberrorreport)nsException2mberrorreport:(NSException*) exception{
-    mberrorreport s;
-    s.name = [[ exception name ] UTF8String];
-    s.reason = [[exception reason] UTF8String];
-    
-    NSArray<NSString*>* symbols =  [exception callStackSymbols];
-    for (int i=0; i<[symbols count]; i++) {
-        NSString* str = [symbols objectAtIndex:i ];
-        //NSLog(@"%@",str);
-        s.items.push_back( [ str UTF8String]);
-    }
-    s.itemcount = (int)s.items.size();
-    
-    return s;
-}
 
 -(string) dict2KVString:(NSDictionary*)dict{
     
@@ -268,6 +270,7 @@ NSMutableDictionary* m_CallbackDict;
     }
 }
 
+
 -(void) appStartLaunchWithAppKey:(NSString*)appkey
                      withChannel:(NSString*)channel
                         withData:(NSDictionary*)data{
@@ -322,10 +325,13 @@ NSMutableDictionary* m_CallbackDict;
     sendFailDataTask->loadDataFromLocalDisk();
     m_taskManager->start ( sendFailDataTask.duplicate() );
     
-//    InstallUncaughtExceptionHandler();
+    m_timer = new Poco::Timer(500,1*60*1000);
+    Poco::TimerCallback<HeartbeatAction> callback(m_hbAction,&HeartbeatAction::onTimer);
+    m_timer->start(callback);
 }
 
 -(void) quit{
+    m_timer->stop();
     m_taskManager->cancelAll();
     m_taskManager->joinAll();
     //NSLog(@"quiting stat sdk");
@@ -540,6 +546,32 @@ NSMutableDictionary* m_CallbackDict;
 }
 
 
+-(void) logError:(NSException*)exception{
+    
+    mberrorreport mber = [ self nsException2mberrorreport:exception ];
+    
+    [self sendData:mber.toString() forAction:"mberror"];
+    
+}
+
+#pragma mark - 崩溃处理 -
+
+-(mberrorreport)nsException2mberrorreport:(NSException*) exception{
+    mberrorreport s;
+    s.name = [[ exception name ] UTF8String];
+    s.reason = [[exception reason] UTF8String];
+    
+    NSArray<NSString*>* symbols =  [exception callStackSymbols];
+    for (int i=0; i<[symbols count]; i++) {
+        NSString* str = [symbols objectAtIndex:i ];
+        //NSLog(@"%@",str);
+        s.items.push_back( [ str UTF8String]);
+    }
+    s.itemcount = (int)s.items.size();
+    
+    return s;
+}
+
 + (NSArray *)backtrace
 {
     void* callstack[128];
@@ -561,13 +593,6 @@ NSMutableDictionary* m_CallbackDict;
     return backtrace;
 }
 
--(void) logError:(NSException*)exception{
-    
-    mberrorreport mber = [ self nsException2mberrorreport:exception ];
-
-    [self sendData:mber.toString() forAction:"mberror"];
-    
-}
 
 - (void)handleException:(NSException *)exception
 {
@@ -671,29 +696,6 @@ void HandleException(NSException *exception )
     else{
         preNSUncaughtExceptionHandler( exception );
     }
-//    int32_t exceptionCount = OSAtomicIncrement32(&UncaughtExceptionCount);
-//    if (exceptionCount > UncaughtExceptionMaximum)
-//    {
-//        return;
-//    }
-    
-//    NSArray *callStack = [IOSHttpSDK backtrace];
-    
-//    NSMutableDictionary *userInfo =
-//    [NSMutableDictionary
-//     dictionaryWithObject:[NSNumber numberWithInt:-1]
-//     forKey:UncaughtExceptionHandlerSignalKey];
-//    
-//    [userInfo addEntriesFromDictionary:[exception userInfo]];
-//    
-//    //    userInfo =
-//    //    [NSMutableDictionary dictionaryWithDictionary:[exception userInfo]];
-//    [userInfo
-//     setObject:callStack
-//     forKey:UncaughtExceptionHandlerAddressesKey];
-//    
-//    NSException* mexception = [NSException exceptionWithName:[exception name] reason:[exception reason] userInfo:userInfo];
-    
 }
 
 void SignalHandler(int signal)
@@ -725,5 +727,26 @@ void UninstallUncaughtExceptionHandler(void)
     signal(SIGFPE, SIG_DFL);
     signal(SIGBUS, SIG_DFL);
     signal(SIGPIPE, SIG_DFL);
+}
+
+#pragma mark - 心跳数据 -
+HeartbeatAction::HeartbeatAction(){
+    m_sessionId = [[ FCUUID uuid] UTF8String];
+    Poco::Timestamp ts;
+    m_clitime =Poco::NumberFormatter::format( ts.epochMicroseconds() / 1000);
+}
+
+void HeartbeatAction::onTimer(Poco::Timer& timer){
+    
+    m_span = m_ts.elapsed() / Poco::Timestamp::resolution();
+    
+    mbheartbeat hb;
+    hb.sessionid = m_sessionId;
+    hb.starttime = m_clitime;
+    hb.span = m_span;
+    
+    string data = hb.toString();
+    
+    [[IOSHttpSDK shareStatSDK] sendData:data forAction:"mbhbdo"];
 }
 

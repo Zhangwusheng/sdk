@@ -131,6 +131,20 @@ std::string mberrorreport::toString()
     return result;
     
 }
+
+std::string mbheartbeat::toString(){
+    std::string result;
+    result.append("sessionid=");
+    result.append(SerDerUtil::toBase64(this->sessionid));
+    result.append("&starttime=");
+    //    Poco::translateInPlace(reason," \t\n","|||");
+    result.append(SerDerUtil::toBase64(this->starttime));
+    result.append("&span=");
+    result.append(SerDerUtil::toBase64(Poco::NumberFormatter::format(span)));
+//    result.append("&signal=");
+//    result.append(SerDerUtil::toBase64(Poco::NumberFormatter::format(signal)));
+    return result;
+}
 #else
 
 //#include "mbstartup.pb.h"

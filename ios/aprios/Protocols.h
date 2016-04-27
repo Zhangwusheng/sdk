@@ -97,4 +97,13 @@ public:
     std::string toString();
 
 };
+
+class mbheartbeat
+{
+public:
+    std::string sessionid;
+    std::string starttime;
+    long span;
+    std::string toString();
+};
 #endif /* defined(__aprios__mbstartup__) */
